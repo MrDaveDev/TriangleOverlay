@@ -3,23 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirect</title>
+    <title>Twitch OAuth Redirect</title>
+    <script>
+        // This script runs once the user is redirected back from Twitch after authentication
+        const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';  // Replace with your Twitch client ID
+        const clientSecret = '7ceixtxr6mcr7h0kqvhnn3skneczps';  // Replace with your Twitch client secret
+        const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/redirect.html';  // The redirect URI used in Twitch dev console
+
+        // Function to get the access token using the code returned from Twitch
+        function getAccessToken(code) {
+            const body = new URLSearchParams({
+                client_id: clientId,
+                client_secret: clientSecret,
+                code: code,
+                grant_type: 'authorization_code',
+                redirect_uri: redirectUri,
+            });
+
+            fetch('https://id.twitch.tv/oauth2/token', {
+                method: 'POST',
+                body: body,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.access_token) {
+                        // Save the access token in localStorage to be used in the main page
+                        localStorage.setItem('access_token', data.access_token);
+                        // Redirect to the main page (index.html)
+                        window.location.href = 'index.html';
+                    } else {
+                        console.error('Failed to get access token:', data);
+                        alert('Failed to authenticate with Twitch.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error during token exchange:', error);
+                    alert('An error occurred during authentication.');
+                });
+        }
+
+        // Check if there's a code in the URL (this happens after Twitch redirects back)
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            // If a code is present in the URL, exchange it for an access token
+            getAccessToken(code);
+        } else {
+            console.error('No code found in the URL.');
+            alert('Failed to authenticate with Twitch.');
+        }
+    </script>
 </head>
 <body>
-<script>
-    // Extract the code and state parameters from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
-
-    if (code) {
-        // If a code is returned, handle it (send to your backend or process it)
-        console.log('Authorization code:', code);
-        console.log('State:', state);
-        // Here you can send the code to your Unity backend to complete OAuth flow
-    } else {
-        console.log('No code found. Something went wrong.');
-    }
-</script>
+<p>Authenticating with Twitch...</p>
 </body>
 </html>
