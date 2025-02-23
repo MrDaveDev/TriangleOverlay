@@ -1,7 +1,7 @@
 // Step 1: Redirect the user to the Twitch authorization page
 function loginWithTwitch() {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';
-    const redirectUri = 'http://localhost'; // e.g., http://localhost
+    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/'; // e.g., http://localhost
     const responseType = 'token'; // You can use 'code' for Authorization Code flow, or 'token' for Implicit Flow
     const scope = 'user:read:email'; // This scope is needed to access the username.
 
