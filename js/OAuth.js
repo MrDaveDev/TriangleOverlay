@@ -1,68 +1,87 @@
-// Step 1: Redirect the user to the Twitch authorization page
-function loginWithTwitch() {
-    const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';
-    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/'; // e.g., http://localhost
-    const responseType = 'token'; // You can use 'code' for Authorization Code flow, or 'token' for Implicit Flow
-    const scope = 'user:read:email'; // This scope is needed to access the username.
+// OAuth configuration
+const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
+const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/'; // Your GitHub Pages URL
 
-    const url = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
-
-    window.location.href = url; // Redirect to Twitch login page
+// Step 1: Redirect to Twitch for OAuth login
+function redirectToTwitchOAuth() {
+    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
+    window.location.href = authUrl; // Redirect to Twitch OAuth login
 }
 
-// Step 2: Once the user authenticates, Twitch will redirect to your site with the token
-function handleAuthRedirect() {
-    const hash = window.location.hash.substring(1); // Remove the "#" from the URL
-    const params = new URLSearchParams(hash);
-
-    const accessToken = params.get('access_token');
-
-    if (accessToken) {
-        // Successfully authenticated, now we can fetch the user's info
-        getUserInfo(accessToken);
-    }
+// Step 2: Extract the access token from the URL when redirected back to the page
+function getAccessToken() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('access_token');  // Extract the access_token from the URL
+    console.log("Access Token:", token);  // Log it for debugging
+    return token;
 }
 
-// Step 3: Fetch user information (e.g., username) using the access token
-function getUserInfo(accessToken) {
-    const url = 'https://api.twitch.tv/helix/users';
-
-    fetch(url, {
+// Step 3: Fetch user data from Twitch API using the access token
+function fetchUserData(accessToken) {
+    return fetch('https://api.twitch.tv/helix/users', {
         headers: {
-            'Client-ID': 'mdvx1f5go1vufb6ilzl43eu4o67onp',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessToken}`,
+            'Client-Id': clientId
         }
     })
         .then(response => response.json())
         .then(data => {
-            const username = data.data[0].login; // Extract username from the response
-            console.log('Authenticated as:', username);
-
-            // Now send the username and selected hat to your Unity app (via your HTTP server)
-            applyHatToCharacter(username, selectedHat);
+            if (data.data && data.data.length > 0) {
+                const username = data.data[0].login;
+                console.log("Username:", username);  // Log username for debugging
+                return username;
+            } else {
+                throw new Error("User data not found.");
+            }
         })
-        .catch(error => console.error('Error fetching user info:', error));
+        .catch(err => {
+            console.error('Error fetching user data:', err);
+            return null;
+        });
 }
 
-// Call this function when the page loads
-handleAuthRedirect();
+// Step 4: Send the username and hat choice to your Unity app
+function sendUsernameToUnity(username, hatChoice) {
+    const unityServerUrl = 'http://localhost:8080/'; // Replace with your Unity app's server URL
 
-function applyHatToCharacter(username, hat) {
-    const data = {
-        viewer: username,
-        hat: hat
-    };
-
-    fetch('http://localhost:8080/', {  // Adjust the URL to your Unity app's listener URL
+    fetch(unityServerUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams(data)
+        body: `viewer=${username}&hat=${hatChoice}`  // Send the username and selected hat
     })
         .then(response => response.text())
-        .then(responseText => {
-            console.log(responseText);
+        .then(data => {
+            console.log('Unity response:', data);
         })
-        .catch(error => console.error('Error applying hat:', error));
+        .catch(err => {
+            console.error('Error sending data to Unity:', err);
+        });
 }
+
+// Step 5: Main function to handle the OAuth flow
+function handleOAuthFlow() {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+        // If the access token is available, fetch the username from Twitch
+        fetchUserData(accessToken)
+            .then(username => {
+                if (username) {
+                    // Apply the hat selection to the Unity app (you can customize the hat choice here)
+                    const hatChoice = 'red';  // Replace with the hat selected by the user
+                    sendUsernameToUnity(username, hatChoice);
+                }
+            })
+            .catch(err => {
+                console.error('Error processing OAuth flow:', err);
+            });
+    } else {
+        console.log("No access token found in URL. Redirecting to Twitch OAuth...");
+        redirectToTwitchOAuth();  // If there's no access token, start the OAuth flow
+    }
+}
+
+// Run the OAuth flow when the page loads
+window.onload = handleOAuthFlow;
