@@ -3,59 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Twitch Extension</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/OAuth.js"></script>
+  <title>Triangle Overlay - Hat Selection</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
-  <button onclick="loginWithTwitch()">Login with Twitch</button>
-
-  <!-- Other content like hats, face, body, etc. -->
+<div class="tab-container">
+  <div class="tab" onclick="showTab('hats')">Hats</div>
+  <div class="tab" onclick="showTab('face')">Face</div>
+  <div class="tab" onclick="showTab('body')">Body</div>
+  <div class="tab" onclick="showTab('color')">Color</div>
 </div>
-</body>
-</html>
 
-<body>
-<div class="container">
-  <div class="tabs">
-    <button class="tablinks" onclick="openTab(event, 'Hats')">Hats</button>
-    <button class="tablinks" onclick="openTab(event, 'Face')">Face</button>
-    <button class="tablinks" onclick="openTab(event, 'Body')">Body</button>
-    <button class="tablinks" onclick="openTab(event, 'Color')">Color</button>
-  </div>
-
-  <div id="Hats" class="tabcontent">
-    <h2>Select a Hat</h2>
-    <div class="hat-options">
-      <button class="hat-btn" onclick="selectHat('red')">
-        <img src="assets/hat-icons/RedBeanie.png" alt="Red Beanie">
-      </button>
-      <button class="hat-btn" onclick="selectHat('blue')">
-        <img src="assets/hat-icons/BlueBeanie.png" alt="Blue Beanie">
-      </button>
-      <button class="hat-btn" onclick="selectHat('green')">
-        <img src="assets/hat-icons/GreenBeanie.png" alt="Green Beanie">
-      </button>
-    </div>
-  </div>
-
-  <div id="Face" class="tabcontent">
-    <h2>Select a Face</h2>
-    <!-- Face options -->
-  </div>
-
-  <div id="Body" class="tabcontent">
-    <h2>Select a Body</h2>
-    <!-- Body options -->
-  </div>
-
-  <div id="Color" class="tabcontent">
-    <h2>Select a Color</h2>
-    <!-- Color options -->
+<div id="hats" class="content active">
+  <div class="hat-selector">
+    <button class="hat-button" onclick="applyHat('red')">Red Beanie</button>
+    <button class="hat-button" onclick="applyHat('blue')">Blue Beanie</button>
+    <button class="hat-button" onclick="applyHat('green')">Green Beanie</button>
   </div>
 </div>
 
-<script src="js/script.js"></script>
+<div id="face" class="content">
+  <!-- Face options will go here -->
+</div>
+
+<div id="body" class="content">
+  <!-- Body options will go here -->
+</div>
+
+<div id="color" class="content">
+  <!-- Color options will go here -->
+</div>
+
+<div class="input-container">
+  <input type="text" id="username-input" placeholder="Enter your username" />
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
