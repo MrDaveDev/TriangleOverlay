@@ -116,3 +116,76 @@ if (code) {
 
 // Event listener for starting the login
 document.getElementById('login-btn').addEventListener('click', startTwitchLogin);
+
+// Store the current hat selection
+let selectedHat = null;
+
+// Function to open tabs
+function openTab(evt, tabName) {
+    const tabContents = document.getElementsByClassName("tabcontent");
+    for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+    }
+
+    const tabLinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Select a hat and store the selection
+function selectHat(hat) {
+    selectedHat = hat;
+    console.log(`Hat selected: ${selectedHat}`);
+}
+
+// Apply the selected hat to the character
+function applyHatToCharacter() {
+    const username = document.getElementById('username').value;
+
+    if (!username) {
+        alert("Please enter your username.");
+        return;
+    }
+
+    if (!selectedHat) {
+        alert("Please select a hat.");
+        return;
+    }
+
+    console.log(`Applying ${selectedHat} to character ${username}`);
+
+    // Send the selected hat and username to your server
+    fetch('http://localhost:8080/hat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            viewerName: username,
+            hat: selectedHat,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Hat applied successfully!');
+                alert('Hat applied successfully!');
+            } else {
+                console.error('Error applying hat:', data.message);
+                alert('Error applying hat. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error applying hat. Please try again.');
+        });
+}
+
+// Default action to display Hats tab
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".tablinks").click();
+});
