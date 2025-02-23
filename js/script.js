@@ -17,8 +17,8 @@ function checkForToken() {
     const accessToken = params.get('access_token');  // Extract the access_token parameter
 
     if (accessToken) {
-        // If the token is found, proceed with fetching user data
-        fetchUserData(accessToken);
+        console.log("Access Token:", accessToken);  // Log the access token for debugging
+        fetchUserData(accessToken);  // Proceed with fetching user data
     } else {
         console.error("No access token found");
     }
@@ -29,16 +29,25 @@ function fetchUserData(accessToken) {
     fetch('https://api.twitch.tv/helix/users', {
         method: 'GET',
         headers: {
-            'Client-ID': clientId,                      // Twitch Client ID
-            'Authorization': `Bearer ${accessToken}`,    // OAuth Access Token
+            'Client-ID': 'your-client-id',                   // Use your Twitch Client ID
+            'Authorization': `Bearer ${accessToken}`,        // Use the OAuth Access Token
         }
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);  // Log the response to see if it works
+            if (data.data && data.data.length > 0) {
+                const username = data.data[0].login;  // Get the username from the response
+                console.log("Twitch Username:", username);
+                // Proceed with the rest of your logic using the username
+            } else {
+                console.error("Failed to fetch user data:", data);
+            }
         })
-        .catch(error => console.error('Error fetching user data:', error));
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
 }
+
 
 // Function to apply the hat to the correct character
 function applyHatToCharacter() {
