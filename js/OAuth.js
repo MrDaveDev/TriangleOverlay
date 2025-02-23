@@ -57,7 +57,7 @@ function getUserData(accessToken) {
         .then(data => {
             console.log("Twitch User Data:", data);
 
-            // Now that we have the user's Twitch data, use it to apply the hat to the right character
+            // Now that we have the user's Twitch data, use it to apply the correct hat
             const username = data.data[0].login; // Twitch username
 
             // Pass the username to your Unity app (or backend) to apply the correct hat
@@ -82,12 +82,19 @@ window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
 
-    if (code) {
+    // Check if we have an existing access token in localStorage
+    const existingToken = localStorage.getItem('twitch_access_token');
+
+    // If there's an access token, don't redirect again and use it directly
+    if (existingToken) {
+        getUserData(existingToken);
+    }
+    else if (code) {
         console.log("OAuth code received: ", code);
         // Now exchange the code for the access token
         exchangeCodeForAccessToken(code);
     } else {
-        // If there's no code, start the OAuth flow (e.g., via a login button)
+        // If there's no code and no token, start the OAuth flow (e.g., via a login button)
         startOAuthFlow();
     }
 };
