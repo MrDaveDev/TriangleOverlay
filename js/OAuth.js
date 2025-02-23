@@ -42,7 +42,7 @@ function fetchUserData(accessToken) {
 
 // Step 4: Send the username and hat choice to your Unity app
 function sendUsernameToUnity(username, hatChoice) {
-    const unityServerUrl = 'http://localhost:8080/'; // Replace with your Unity app's server URL
+    const unityServerUrl = 'http://localhost:8080/hat'; // Unity app's server URL
 
     fetch(unityServerUrl, {
         method: 'POST',
