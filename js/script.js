@@ -5,6 +5,7 @@ let userName = ''; // Variable to store the Twitch username
 
 // Function to start the OAuth login
 function startOAuthLogin() {
+    console.log('Starting OAuth login...');
     const url = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
     window.location.href = url; // Redirect to Twitch login page
 }
@@ -53,7 +54,7 @@ function applyHatToCharacter() {
 
 // Initialize OAuth login if user is not logged in
 if (!userName) {
-    startOAuthLogin();
+    startOAuthLogin(); // This should trigger the redirect to Twitch
 }
 
 // If we're at the redirect URI, check for token
