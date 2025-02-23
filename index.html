@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitch Extension</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/OAuth.js"></script>
+</head>
+<body>
+<div class="container">
+  <button onclick="loginWithTwitch()">Login with Twitch</button>
+
+  <!-- Other content like hats, face, body, etc. -->
+</div>
+</body>
+</html>
+
+<body>
+<div class="container">
+  <div class="tabs">
+    <button class="tablinks" onclick="openTab(event, 'Hats')">Hats</button>
+    <button class="tablinks" onclick="openTab(event, 'Face')">Face</button>
+    <button class="tablinks" onclick="openTab(event, 'Body')">Body</button>
+    <button class="tablinks" onclick="openTab(event, 'Color')">Color</button>
+  </div>
+
+  <div id="Hats" class="tabcontent">
+    <h2>Select a Hat</h2>
+    <div class="hat-options">
+      <button class="hat-btn" onclick="selectHat('red')">
+        <img src="assets/hat-icons/RedBeanie.png" alt="Red Beanie">
+      </button>
+      <button class="hat-btn" onclick="selectHat('blue')">
+        <img src="assets/hat-icons/BlueBeanie.png" alt="Blue Beanie">
+      </button>
+      <button class="hat-btn" onclick="selectHat('green')">
+        <img src="assets/hat-icons/GreenBeanie.png" alt="Green Beanie">
+      </button>
+    </div>
+  </div>
+
+  <div id="Face" class="tabcontent">
+    <h2>Select a Face</h2>
+    <!-- Face options -->
+  </div>
+
+  <div id="Body" class="tabcontent">
+    <h2>Select a Body</h2>
+    <!-- Body options -->
+  </div>
+
+  <div id="Color" class="tabcontent">
+    <h2>Select a Color</h2>
+    <!-- Color options -->
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
