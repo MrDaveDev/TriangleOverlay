@@ -1,12 +1,20 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #2b2b2b;
     color: #fff;
     text-align: center;
     padding: 20px;
+    margin: 0;
 }
 
-.tab-container {
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Tabs styles */
+.tabs {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
@@ -18,17 +26,19 @@ body {
     margin: 0 10px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .tab:hover {
     background-color: #666;
 }
 
-.content {
+/* Tab content */
+.tab-content {
     display: none;
 }
 
-.active {
+.tab-content.active {
     display: block;
 }
 
@@ -44,6 +54,7 @@ body {
     cursor: pointer;
     color: #fff;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .hat-button:hover {
@@ -55,8 +66,22 @@ body {
 }
 
 #username-input {
-    padding: 5px;
+    padding: 10px;
     font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    width: 70%;
+    max-width: 300px;
+    margin-top: 20px;
+}
+
+/* Optional styles for responsiveness */
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab {
+        margin-bottom: 10px;
+    }
 }
