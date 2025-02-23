@@ -1,191 +1,62 @@
-const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';  // Replace with your Twitch client ID
-const clientSecret = '7ceixtxr6mcr7h0kqvhnn3skneczps';  // Replace with your Twitch client secret
-const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/redirect.html';  // The same redirect URI you used in Twitch dev console
+const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';  // Replace with your actual client ID
+const clientSecret = '7ceixtxr6mcr7h0kqvhnn3skneczps';  // Replace with your actual client secret
+const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/redirect.html'; // Make sure this matches your redirect URI
+let userName = ''; // Variable to store the Twitch username
 
-// Function to get the access token using the code returned from Twitch
-function getAccessToken(code) {
-    const body = new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        code: code,
-        grant_type: 'authorization_code',
-        redirect_uri: redirectUri,
-    });
-
-    fetch('https://id.twitch.tv/oauth2/token', {
-        method: 'POST',
-        body: body,
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.access_token) {
-                console.log('Access Token:', data.access_token);
-                // Save the access token for future API requests
-                localStorage.setItem('access_token', data.access_token);
-                // After getting the access token, fetch the user's details
-                fetchUserData(data.access_token);
-            } else {
-                console.error('Failed to get access token:', data);
-            }
-        })
-        .catch((error) => {
-            console.error('Error during token exchange:', error);
-        });
+// Function to start the OAuth login
+function startOAuthLogin() {
+    const url = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
+    window.location.href = url; // Redirect to Twitch login page
 }
 
-// Function to fetch user data using the access token
+// Check for the OAuth token in the URL after redirect
+function checkForToken() {
+    const hash = window.location.hash.substring(1); // Get everything after the "#"
+    const params = new URLSearchParams(hash);
+    const accessToken = params.get('access_token'); // Get the access token from the URL
+
+    if (accessToken) {
+        // Token received, now fetch user data
+        fetchUserData(accessToken);
+    }
+}
+
+// Fetch user data from Twitch API
 function fetchUserData(accessToken) {
     fetch('https://api.twitch.tv/helix/users', {
         method: 'GET',
         headers: {
+            'Client-ID': clientId,
             'Authorization': `Bearer ${accessToken}`,
-            'Client-Id': clientId,
-        },
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.data && data.data.length > 0) {
-                const user = data.data[0];
-                const username = user.login;  // Twitch username
-                console.log('Twitch User:', user);
-                console.log('User’s Username:', username);
-
-                // Store the username for applying the hat later
-                localStorage.setItem('twitch_username', username);
-                // Show the tab for selecting a hat now that the username is set
-                showHatTab(username);
-            } else {
-                console.error('No user data returned');
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching user info:', error);
-        });
-}
-
-// Function to show the hat selection tab after authentication
-function showHatTab(username) {
-    document.getElementById('username').textContent = `Hello, ${username}! Select your Hat`;
-    document.getElementById('hat-selection').style.display = 'block';  // Show the hat selection section
-}
-
-// Function to handle hat selection
-function selectHat(hatColor) {
-    const username = localStorage.getItem('twitch_username');
-    if (!username) {
-        alert('User not authenticated');
-        return;
-    }
-
-    // Send a POST request to the Unity app to apply the selected hat
-    fetch('http://localhost:8080/hat', {  // Make sure the Unity server is running and CORS is enabled
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            viewer: username,  // Use the Twitch username
-            hat: hatColor,     // Send the selected hat color
-        }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log('Hat applied:', data);
-            alert('Hat applied successfully!');
-        })
-        .catch((error) => {
-            console.error('Error applying hat:', error);
-            alert('Failed to apply hat.');
-        });
-}
-
-// Function to handle the Twitch login flow
-function startTwitchLogin() {
-    const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email`;
-    window.location.href = twitchAuthUrl;
-}
-
-// Check if there's a code in the URL (this happens after Twitch redirects back)
-const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-
-if (code) {
-    // If a code is present in the URL, exchange it for an access token
-    getAccessToken(code);
-}
-
-// Event listener for starting the login
-document.getElementById('login-btn').addEventListener('click', startTwitchLogin);
-
-// Store the current hat selection
-let selectedHat = null;
-
-// Function to open tabs
-function openTab(evt, tabName) {
-    const tabContents = document.getElementsByClassName("tabcontent");
-    for (let i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
-    }
-
-    const tabLinks = document.getElementsByClassName("tablinks");
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
-    }
-
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
-// Select a hat and store the selection
-function selectHat(hat) {
-    selectedHat = hat;
-    console.log(`Hat selected: ${selectedHat}`);
-}
-
-// Apply the selected hat to the character
-function applyHatToCharacter() {
-    const username = document.getElementById('username').value;
-
-    if (!username) {
-        alert("Please enter your username.");
-        return;
-    }
-
-    if (!selectedHat) {
-        alert("Please select a hat.");
-        return;
-    }
-
-    console.log(`Applying ${selectedHat} to character ${username}`);
-
-    // Send the selected hat and username to your server
-    fetch('http://localhost:8080/hat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            viewerName: username,
-            hat: selectedHat,
-        }),
+        }
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                console.log('Hat applied successfully!');
-                alert('Hat applied successfully!');
-            } else {
-                console.error('Error applying hat:', data.message);
-                alert('Error applying hat. Please try again.');
-            }
+            userName = data.data[0].login; // Get the logged-in username
+            console.log('Twitch Username:', userName);
+            document.getElementById('username-section').style.display = 'none'; // Hide the username section
+            // Proceed with the rest of your app's logic here
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error applying hat. Please try again.');
-        });
+        .catch(error => console.error('Error fetching user data:', error));
 }
 
-// Default action to display Hats tab
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelector(".tablinks").click();
-});
+// Function to apply the hat to the correct character
+function applyHatToCharacter() {
+    if (userName) {
+        // Send a request to your server or Unity app to apply the selected hat for the user
+        console.log(`Applying hat for user: ${userName}`);
+        // Example: You can send an HTTP request to your server here
+    } else {
+        console.log('User is not logged in');
+    }
+}
+
+// Initialize OAuth login if user is not logged in
+if (!userName) {
+    startOAuthLogin();
+}
+
+// If we're at the redirect URI, check for token
+if (window.location.pathname === '/redirect.html') {
+    checkForToken();
+}
