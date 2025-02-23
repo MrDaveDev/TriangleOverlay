@@ -83,5 +83,18 @@ function handleOAuthFlow() {
     }
 }
 
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if (code) {
+        console.log("OAuth code received: ", code);
+        // Proceed to exchange the code for an access token here.
+    } else {
+        console.log("No code received. Maybe this is a fresh visit?");
+    }
+};
+
+
 // Run the OAuth flow when the page loads
 window.onload = handleOAuthFlow;
