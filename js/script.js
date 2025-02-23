@@ -12,15 +12,15 @@ function startOAuthLogin() {
 
 // Check for the OAuth token in the URL after redirect
 function checkForToken() {
-    const hash = window.location.hash.substring(1); // Get everything after the "#"
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token'); // Get the access token from the URL fragment
+    const hash = window.location.hash.substring(1);  // Get everything after the "#"
+    const params = new URLSearchParams(hash);         // Parse the hash part of the URL
+    const accessToken = params.get('access_token');  // Extract the access_token parameter
 
     if (accessToken) {
-        // Token received, now fetch user data
+        // If the token is found, proceed with fetching user data
         fetchUserData(accessToken);
     } else {
-        console.log("No access token found");
+        console.error("No access token found");
     }
 }
 
@@ -29,16 +29,13 @@ function fetchUserData(accessToken) {
     fetch('https://api.twitch.tv/helix/users', {
         method: 'GET',
         headers: {
-            'Client-ID': clientId,
-            'Authorization': `Bearer ${accessToken}`,
+            'Client-ID': clientId,                      // Twitch Client ID
+            'Authorization': `Bearer ${accessToken}`,    // OAuth Access Token
         }
     })
         .then(response => response.json())
         .then(data => {
-            userName = data.data[0].login; // Get the logged-in username
-            console.log('Twitch Username:', userName);
-            document.getElementById('username-section').style.display = 'none'; // Hide the username section
-            // Proceed with the rest of your app's logic here
+            console.log(data);  // Log the response to see if it works
         })
         .catch(error => console.error('Error fetching user data:', error));
 }
