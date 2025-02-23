@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect</title>
+</head>
+<body>
+<script>
+    // Extract the code and state parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+
+    if (code) {
+        // If a code is returned, handle it (send to your backend or process it)
+        console.log('Authorization code:', code);
+        console.log('State:', state);
+        // Here you can send the code to your Unity backend to complete OAuth flow
+    } else {
+        console.log('No code found. Something went wrong.');
+    }
+</script>
+</body>
+</html>
