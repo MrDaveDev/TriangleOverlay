@@ -14,11 +14,13 @@ function startOAuthLogin() {
 function checkForToken() {
     const hash = window.location.hash.substring(1); // Get everything after the "#"
     const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token'); // Get the access token from the URL
+    const accessToken = params.get('access_token'); // Get the access token from the URL fragment
 
     if (accessToken) {
         // Token received, now fetch user data
         fetchUserData(accessToken);
+    } else {
+        console.log("No access token found");
     }
 }
 
@@ -59,5 +61,5 @@ if (!userName) {
 
 // If we're at the redirect URI, check for token
 if (window.location.pathname === '/redirect.html') {
-    checkForToken();
+    checkForToken();  // This will check the hash for the access token
 }
