@@ -51,6 +51,19 @@
   </div>
 </div>
 
+<script>
+  // Get the access token from localStorage (set in redirect.html)
+  const accessToken = localStorage.getItem('access_token');
+
+  if (accessToken) {
+    // Proceed with your API requests using the access token
+    fetchUserData(accessToken);
+  } else {
+    // If no access token, show login button or error message
+    console.log('Access token not found');
+  }
+</script>
+
 <script src="js/script.js"></script>
 </body>
 </html>
