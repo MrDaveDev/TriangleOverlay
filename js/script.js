@@ -5,7 +5,7 @@ const responseType = 'token';  // We want the token for authorization
 
 // Start OAuth login flow
 function loginToTwitch() {
-    const oauthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=user:read:email`;
+    const oauthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email`;
     window.location.href = oauthUrl;
 }
 
