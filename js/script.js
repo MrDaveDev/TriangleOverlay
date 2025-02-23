@@ -1,6 +1,6 @@
 function showTab(tabName) {
-    // Hide all content
-    const tabs = document.querySelectorAll('.content');
+    // Hide all tab content
+    const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
         tab.classList.remove('active');
     });
@@ -30,7 +30,7 @@ function applyHat(hat) {
         },
         body: `viewer=${data.viewer}&hat=${data.hat}`
     })
-        .then(response => response.text())
-        .then(data => console.log('Server Response: ', data))
-        .catch(error => console.error('Error:', error));
+    .then(response => response.text())
+    .then(data => console.log('Server Response: ', data))
+    .catch(error => console.error('Error:', error));
 }
