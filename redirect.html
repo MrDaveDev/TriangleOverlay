@@ -20,9 +20,9 @@
         const accessToken = params.get('access_token');  // Extract access_token
 
         if (accessToken) {
-            // Save the access token to localStorage or pass it back to index.html
+            // Save the access token to localStorage or pass it back to editor.html
             localStorage.setItem('access_token', accessToken);
-            window.location.href = 'index.html';  // Redirect back to the main app (index.html)
+            window.location.href = 'editor.html';  // Redirect back to the main app (editor.html)
         } else {
             // If no token, redirect with error message or retry
             console.error("Access token is missing");
