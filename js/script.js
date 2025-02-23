@@ -5,15 +5,9 @@ let userName = ''; // Variable to store the Twitch username
 
 // Function to start the OAuth login
 function startOAuthLogin() {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if(accessToken) {
-        console.log('Access Token Found');
-    } else {
-        console.log('Starting OAuth login...');
-        const url = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
-        window.location.href = url; // Redirect to Twitch login page
-    }
+    console.log('Starting OAuth login...');
+    const url = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
+    window.location.href = url; // Redirect to Twitch login page
 }
 
 // Check for the OAuth token in the URL after redirect
