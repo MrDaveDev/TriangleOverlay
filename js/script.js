@@ -1,46 +1,36 @@
-// Function to switch between tabs
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
+function showTab(tabName) {
+    // Hide all content
+    const tabs = document.querySelectorAll('.content');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
 
-    // Hide all tab content
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Remove the active class from all buttons
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the selected tab and add the active class to the clicked button
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+    // Show selected tab
+    document.getElementById(tabName).classList.add('active');
 }
 
-// Function to handle hat selection and send to Unity
-function selectHat(hatColor) {
-    console.log(`Hat selected: ${hatColor}`);
+function applyHat(hat) {
+    const username = document.getElementById('username-input').value;
 
-    // Send this information to the Unity app
+    if (username === '') {
+        alert('Please enter your username!');
+        return;
+    }
+
+    // Send the selected hat and username to the server
+    const data = {
+        viewer: username,
+        hat: hat
+    };
+
     fetch('http://localhost:8080/hat', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-            viewer: 'MrDaveDev',
-            hat: hatColor
-        })
+        body: `viewer=${data.viewer}&hat=${data.hat}`
     })
-        .then(response => response.json())
-        .then(data => console.log(data))
+        .then(response => response.text())
+        .then(data => console.log('Server Response: ', data))
         .catch(error => console.error('Error:', error));
 }
-
-// Set default tab to display
-document.addEventListener("DOMContentLoaded", function() {
-    // Open the Hats tab by default
-    document.querySelector(".tablinks").click();
-});
