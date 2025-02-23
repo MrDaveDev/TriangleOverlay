@@ -1,6 +1,6 @@
 // Twitch OAuth URLs
 const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp';  // Get this from the Twitch Developer Console
-const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/';  // Replace with your redirect URL
+const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/redirect';  // Replace with your redirect URL
 const responseType = 'token';  // We want the token for authorization
 
 // Start OAuth login flow
