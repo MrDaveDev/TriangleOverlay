@@ -40,26 +40,3 @@ function fetchUserData(token) {
             console.error("Error fetching user data:", error);
         });
 }
-
-
-
-// Function to apply the hat to the correct character
-function applyHatToCharacter() {
-    if (userName) {
-        // Send a request to your server or Unity app to apply the selected hat for the user
-        console.log(`Applying hat for user: ${userName}`);
-        // Example: You can send an HTTP request to your server here
-    } else {
-        console.log('User is not logged in');
-    }
-}
-
-// Initialize OAuth login if user is not logged in
-if (!userName) {
-    startOAuthLogin(); // This should trigger the redirect to Twitch
-}
-
-// If we're at the redirect URI, check for token
-if (window.location.pathname === '/redirect.html') {
-    checkForToken();  // This will check the hash for the access token
-}
