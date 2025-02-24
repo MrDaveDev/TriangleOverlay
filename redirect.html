@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Processing Authentication...</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitch Redirect</title>
 </head>
 <body>
-<script>
+  <script>
     window.onload = function() {
-        const params = new URLSearchParams(window.location.hash.substr(1));
-        const accessToken = params.get("access_token");
+      // Extract the access token from the URL
+      const params = new URLSearchParams(window.location.hash.substr(1));
+      const accessToken = params.get("access_token");
 
-        if (accessToken) {
-            localStorage.setItem("twitch_access_token", accessToken);
-            window.location.href = "index.html"; // Redirect back to panel
-        } else {
-            document.body.innerHTML = "<p>Authentication failed. Please try again.</p>";
-        }
+      if (accessToken) {
+        // Store the token in localStorage
+        localStorage.setItem("twitch_access_token", accessToken);
+        // Redirect to the main page (index.html)
+        window.location.href = "index.html";
+      } else {
+        document.body.innerHTML = "<p>Authentication failed. Please try again.</p>";
+      }
     };
-</script>
+  </script>
 </body>
 </html>
