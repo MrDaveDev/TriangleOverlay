@@ -32,10 +32,12 @@ function fetchUserData(token) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log("Twitch user data:", data);
+            console.log("Twitch API Response:", data);
+
             if (data.data && data.data.length > 0) {
                 const username = data.data[0].login;
-                console.log("Authenticated Twitch Username:", username);
+                console.log("Successfully authenticated! Username:", username);
+                document.getElementById("username-section").innerHTML = `<p>Logged in as <strong>${username}</strong></p>`;
             } else {
                 console.error("Failed to retrieve Twitch user data.");
             }
