@@ -14,12 +14,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function redirectToTwitchAuth() {
-    const clientId = "mdvx1f5go1vufb6ilzl43eu4o67onp";  // Replace with your Twitch client ID
-    const redirectUri = "https://mrdavedev.github.io/TriangleOverlay/redirect.html";
-    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=user:read:email`;
+document.addEventListener("DOMContentLoaded", function () {
+    const accessToken = localStorage.getItem("twitch_access_token");
 
-    window.location.href = authUrl; // Redirect to Twitch for authentication
+    if (!accessToken) {
+        document.getElementById("auth-button").addEventListener("click", authenticateWithTwitch);
+    } else {
+        console.log("User is authenticated with Twitch");
+        // Now you can make API calls with accessToken
+    }
+});
+
+
+function redirectToTwitchAuth() {
+    const clientId = "mdvx1f5go1vufb6ilzl43eu4o67onp";
+    const redirectUri = "https://mrdavedev.github.io/TriangleOverlay/redirect.html";
+    const scope = "user:read:email"; // Add required scopes
+    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
+
+    // Open in a new tab
+    window.open(authUrl, "_blank");
 }
 
 function fetchUserData(token) {
