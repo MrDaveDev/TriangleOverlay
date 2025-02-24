@@ -73,7 +73,7 @@ function selectHat(hat) {
 // Apply the selected hat to the character
 function applyHatToCharacter() {
     const formData = new URLSearchParams();
-    formData.append("username", twitchUsername);
+    formData.append("username", viewerName);
     formData.append("hat", selectedHat);
 
     fetch("http://localhost:8080/", {
