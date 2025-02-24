@@ -69,7 +69,7 @@ function selectHat(hat) {
 
 // Apply the selected hat to the character
 function applyHatToCharacter() {
-    const username = document.getElementById('username').value;
+    const username = data.data[0].login;
 
     if (!username) {
         alert("Please enter your username.");
