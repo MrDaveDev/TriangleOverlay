@@ -44,3 +44,28 @@ function fetchUserData(token) {
         })
         .catch(error => console.error("Error fetching Twitch user data:", error));
 }
+
+function openTab(evt, tabName) {
+    let i, tabcontent, tablinks;
+
+    // Hide all tab contents
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Remove active class from all tab buttons
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the selected tab and mark it as active
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Set default tab to "Hats" on page load
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".tablinks").click();
+});
