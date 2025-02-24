@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check if user is already authenticated
     if (!accessToken) {
         // Show the login button if the user is not authenticated
-        document.getElementById("auth-button").addEventListener("click", authenticateWithTwitch);
+        const authButton = document.getElementById("auth-button");
+        authButton.addEventListener("click", authenticateWithTwitch);
     } else {
         console.log("User is authenticated with Twitch.");
         // Now you can make API calls with accessToken
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function authenticateWithTwitch() {
+    console.log("Login button clicked."); // Debugging line
     const clientId = "mdvx1f5go1vufb6ilzl43eu4o67onp";
     const redirectUri = "https://mrdavedev.github.io/TriangleOverlay/redirect.html"; // Change this to your redirect URI
     const scope = "user:read:email"; // Scopes you need
