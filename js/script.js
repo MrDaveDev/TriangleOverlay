@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const redirectUri = "https://mrdavedev.github.io/TriangleOverlay/redirect.html";
     const storedToken = localStorage.getItem("access_token");
 
+    var viewerName = '';
+
     if (!storedToken) {
         // No token found, initiate OAuth flow
         redirectToTwitchAuth();
@@ -36,6 +38,7 @@ function fetchUserData(token) {
 
             if (data.data && data.data.length > 0) {
                 const username = data.data[0].login;
+                viewerName = data.data[0].login;
                 console.log("Successfully authenticated! Username:", username);
                 document.getElementById("username-section").innerHTML = `<p>Logged in as <strong>${username}</strong></p>`;
             } else {
@@ -69,9 +72,7 @@ function selectHat(hat) {
 
 // Apply the selected hat to the character
 function applyHatToCharacter() {
-    const username = data.data[0].login;
-
-    if (!username) {
+    if (!viewerName) {
         alert("Please enter your username.");
         return;
     }
@@ -81,7 +82,7 @@ function applyHatToCharacter() {
         return;
     }
 
-    console.log(`Applying ${selectedHat} to character ${username}`);
+    console.log(`Applying ${selectedHat} to character ${viewerName}`);
 
     // Send the selected hat and username to your server
     fetch('http://localhost:8080/hat', {
@@ -90,7 +91,7 @@ function applyHatToCharacter() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            viewerName: username,
+            viewerName: viewerName,
             hat: selectedHat,
         }),
     })
