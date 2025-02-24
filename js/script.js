@@ -1,3 +1,5 @@
+var viewerName = '';
+
 document.addEventListener("DOMContentLoaded", function () {
     const accessToken = localStorage.getItem("twitch_access_token");
 
@@ -24,6 +26,29 @@ function authenticateWithTwitch() {
     window.open(authUrl, "_blank");
 }
 
+function getViewerName(accessToken) {
+    // Make a request to the Twitch API to get user info
+    fetch('https://api.twitch.tv/helix/users', {
+        method: 'GET',
+        headers: {
+            'Client-ID': 'mdvx1f5go1vufb6ilzl43eu4o67onp',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            viewerName = data.data[0].login; // Extract the username
+            console.log("Authenticated user:", viewerName);
+
+            // You can now use `viewerName` as needed
+            // You may want to store it in localStorage or use it directly in your extension
+            localStorage.setItem("viewer_name", viewerName);
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
+
 function openTab(evt, tabName) {
     let i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -38,8 +63,10 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
+var selectedHat = '';
+
 function selectHat(hatType) {
-    console.log(`Selected hat: ${hatType}`);
+    selectedHat = hatType;
     applyHatToCharacter();
     // Send the selected hat choice to your server or Unity instance
 }
