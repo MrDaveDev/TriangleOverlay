@@ -21,22 +21,24 @@ function redirectToTwitchAuth() {
 }
 
 function fetchUserData(token) {
+    const accessToken = localStorage.getItem("access_token");
+
     fetch('https://api.twitch.tv/helix/users', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
-            'Client-Id': 'YOUR_TWITCH_CLIENT_ID'
+            'Authorization': `Bearer ${accessToken}`,
+            'Client-Id': 'mdvx1f5go1vufb6ilzl43eu4o67onp'
         }
     })
         .then(response => response.json())
         .then(data => {
-            console.log("User data:", data);
+            console.log("Twitch user data:", data);
             if (data.data && data.data.length > 0) {
                 const username = data.data[0].login;
-                console.log(`Authenticated as ${username}`);
+                console.log("Authenticated Twitch Username:", username);
+            } else {
+                console.error("Failed to retrieve Twitch user data.");
             }
         })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
+        .catch(error => console.error("Error fetching Twitch user data:", error));
 }
