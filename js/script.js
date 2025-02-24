@@ -85,30 +85,20 @@ function applyHatToCharacter() {
     console.log(`Applying ${selectedHat} to character ${viewerName}`);
 
     // Send the selected hat and username to your server
-    fetch('http://localhost:8080/hat', {
-        method: 'POST',
+    fetch("http://localhost:8080/", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            viewerName: viewerName,
-            hat: selectedHat,
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Hat applied successfully!');
-                alert('Hat applied successfully!');
-            } else {
-                console.error('Error applying hat:', data.message);
-                alert('Error applying hat. Please try again.');
-            }
+            username: viewerName,  // Replace with actual username
+            hat: selectedHat           // Replace with actual selected hat
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error applying hat. Please try again.');
-        });
+    })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error("Error:", error));
+
 }
 
 // Default action to display Hats tab
