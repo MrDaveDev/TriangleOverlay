@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clientId = "mdvx1f5go1vufb6ilzl43eu4o67onp";  // Replace with your Twitch client ID
     const redirectUri = "https://mrdavedev.github.io/TriangleOverlay/redirect.html";
     const storedToken = localStorage.getItem("access_token");
-    
+
     var viewerName = '';
 
     if (!storedToken) {
@@ -72,43 +72,20 @@ function selectHat(hat) {
 
 // Apply the selected hat to the character
 function applyHatToCharacter() {
-    if (!viewerName) {
-        alert("Please enter your username.");
-        return;
-    }
+    const formData = new URLSearchParams();
+    formData.append("username", twitchUsername);
+    formData.append("hat", selectedHat);
 
-    if (!selectedHat) {
-        alert("Please select a hat.");
-        return;
-    }
-
-    console.log(`Applying ${selectedHat} to character ${viewerName}`);
-
-    // Send the selected hat and username to your server
-    fetch('http://localhost:8080/hat', {
-        method: 'POST',
+    fetch("http://localhost:8080/", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: JSON.stringify({
-            viewerName: viewerName,
-            hat: selectedHat,
-        }),
+        body: formData.toString()
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Hat applied successfully!');
-                alert('Hat applied successfully!');
-            } else {
-                console.error('Error applying hat:', data.message);
-                alert('Error applying hat. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error applying hat. Please try again.');
-        });
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error("Error:", error));
 }
 
 // Default action to display Hats tab
