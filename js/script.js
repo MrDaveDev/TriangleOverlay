@@ -46,8 +46,6 @@ async function exchangeCodeForToken(code) {
     }
 }
 
-
-
 // Fetch user info using the access token
 async function fetchUserInfo(token) {
     try {
@@ -81,3 +79,38 @@ window.onload = () => {
         exchangeCodeForToken(code);
     }
 };
+
+// Fetch user info from Twitch API
+async function fetchUserInfo(accessToken) {
+    const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your actual client ID
+
+    try {
+        // Make a request to get user information
+        const response = await fetch('https://api.twitch.tv/helix/users', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`, // Include the access token
+                'Client-Id': clientId,                    // Include your Client ID
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.data && data.data.length > 0) {
+                const user = data.data[0];  // Twitch returns an array; we want the first user
+                console.log('Username:', user.login); // Twitch username (login)
+                console.log('Display Name:', user.display_name); // Display name
+                console.log('User ID:', user.id); // User ID
+
+                // Update your page with the username
+                document.getElementById('twitch-login').innerText = `Logged in as ${user.display_name}`;
+                document.getElementById('twitch-login').disabled = true; // Optionally disable the login button after login
+            }
+        } else {
+            const errorData = await response.json();
+            console.error('Error fetching user info:', response.status, errorData);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
