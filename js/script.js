@@ -46,32 +46,6 @@ async function exchangeCodeForToken(code) {
     }
 }
 
-// Fetch user info using the access token
-async function fetchUserInfo(token) {
-    try {
-        const response = await fetch('https://api.twitch.tv/helix/users', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Client-Id': 'mdvx1f5go1vufb6ilzl43eu4o67onp', // Replace with your Client ID
-            },
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('User Info:', data);
-            if (data.data && data.data.length > 0) {
-                const user = data.data[0];
-                document.getElementById('twitch-login').innerText = `Logged in as ${user.display_name}`;
-                document.getElementById('twitch-login').disabled = true; // Disable button after login
-            }
-        } else {
-            console.error('Error fetching user info:', response.status, await response.text());
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 // On page load, check if we have the code to exchange
 window.onload = () => {
     const code = getCodeFromUrl();
@@ -79,6 +53,29 @@ window.onload = () => {
         exchangeCodeForToken(code);
     }
 };
+
+// Function to disable all buttons except the login button
+function disableOtherButtons() {
+    const allButtons = document.querySelectorAll('button'); // Get all button elements
+    const loginButton = document.getElementById('twitch-login'); // Get the login button
+
+    // Loop through all buttons and disable them
+    allButtons.forEach(button => {
+        if (button !== loginButton) {
+            button.disabled = true; // Disable button
+            button.classList.add('disabled'); // Optional: Add a class to style disabled buttons
+        }
+    });
+}
+
+// Function to enable all buttons after login
+function enableAllButtons() {
+    const allButtons = document.querySelectorAll('button'); // Get all button elements
+    allButtons.forEach(button => {
+        button.disabled = false; // Enable button
+        button.classList.remove('disabled'); // Remove the disabled class if you added one
+    });
+}
 
 // Fetch user info from Twitch API
 async function fetchUserInfo(accessToken) {
@@ -101,13 +98,14 @@ async function fetchUserInfo(accessToken) {
                 console.log('Display Name:', user.display_name); // Display name
                 console.log('User ID:', user.id); // User ID
 
-                // Get the login button element
+                // Change the login button text and disable it
                 const loginButton = document.getElementById('twitch-login');
+                loginButton.innerText = `Logged in as ${user.display_name}`;
+                loginButton.disabled = true;
+                loginButton.classList.add('disabled');
 
-                // Disable the button and change its text after login
-                loginButton.innerText = `${user.display_name}`;
-                loginButton.disabled = true;  // This disables the button
-                loginButton.classList.add('disabled');  // Optional: Add a "disabled" class for extra styling (like opacity change)
+                // Enable other buttons now that the user is logged in
+                enableAllButtons();
             }
         } else {
             const errorData = await response.json();
@@ -117,4 +115,18 @@ async function fetchUserInfo(accessToken) {
         console.error('Error:', error);
     }
 }
+
+// Check if there's an access token on page load
+window.onload = () => {
+    const accessToken = localStorage.getItem('access_token'); // Retrieve access token from localStorage (if stored)
+
+    if (accessToken) {
+        // If there's an access token, enable all buttons
+        enableAllButtons();
+        fetchUserInfo(accessToken); // Fetch user info if token is available
+    } else {
+        // If no access token, disable all buttons except the login button
+        disableOtherButtons();
+    }
+};
 
