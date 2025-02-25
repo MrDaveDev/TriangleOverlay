@@ -1,6 +1,6 @@
 function twitchLogin() {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
-    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/'; // Replace with your redirect URI
+    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Replace with your redirect URI
     const scope = 'user:read:email'; // Adjust scope as needed
 
     const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent(scope)}`;
