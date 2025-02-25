@@ -118,7 +118,7 @@ async function fetchUserInfo(accessToken) {
     }
 }
 
-function sendHatChangeRequest(hatName) {
+function sendHatChangeRequest(hatName, viewerName) {
     const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
 
     // Create the data to send
@@ -142,10 +142,10 @@ function sendHatChangeRequest(hatName) {
 }
 
 // Example button click event to change the hat
-document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat');
-document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie');
-document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie');
-document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie');
+document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat', user.display_name);
+document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie', user.display_name);
+document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie', user.display_name);
+document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie', user.display_name);
 
 
 
