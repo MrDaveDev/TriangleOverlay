@@ -66,10 +66,32 @@ function openTab(evt, tabName) {
 var selectedHat = '';
 
 function selectHat(hatType) {
-    selectedHat = hatType;
+    const viewerName = localStorage.getItem("viewer_name");
+
+    if (!viewerName) {
+        console.error("Error: No username found. Ensure user is authenticated.");
+        return;
+    }
+
+    console.log(`Sending hat selection: ${hatType} for ${viewerName}`);
+
+    fetch("http://localhost:8080/hat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            username: viewerName,
+            hat: hatType
+        })
+    })
+        .then(response => response.text())
+        .then(data => console.log("Server Response:", data))
+        .catch(error => console.error("Error sending hat selection:", error));
+
     applyHatToCharacter();
-    // Send the selected hat choice to your server or Unity instance
 }
+
 
 // Apply the selected hat to the character
 function applyHatToCharacter() {
