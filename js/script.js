@@ -118,3 +118,34 @@ async function fetchUserInfo(accessToken) {
     }
 }
 
+function sendHatChangeRequest(hatName) {
+    const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
+
+    // Create the data to send
+    const postData = `ChangeHat:${hatName}`;
+
+    // Send the POST request
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+        body: postData
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Received response from Unity: " + data);
+        })
+        .catch(error => {
+            console.error("Error sending request:", error);
+        });
+}
+
+// Example button click event to change the hat
+document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat');
+document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie');
+document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie');
+document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie');
+
+
+
