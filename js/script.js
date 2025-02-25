@@ -125,7 +125,7 @@ function sendHatChangeRequest(hatName, viewerName) {
     const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
 
     // Create the data to send
-    const postData = `ChangeHat:${hatName}`;
+    const postData = `ChangeHat:${hatName}&viewerName=${viewerName}`;
 
     // Send the POST request
     fetch(url, {
