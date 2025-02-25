@@ -1,5 +1,3 @@
-var viewerName;
-
 // Function to start Twitch login process
 function twitchLogin() {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
@@ -83,49 +81,12 @@ window.onload = () => {
     }
 };
 
-// Fetch user info from Twitch API
-async function fetchUserInfo(accessToken) {
-    const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your actual client ID
-
-    try {
-        // Make a request to get user information
-        const response = await fetch('https://api.twitch.tv/helix/users', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`, // Include the access token
-                'Client-Id': clientId,                    // Include your Client ID
-            }
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            if (data.data && data.data.length > 0) {
-                const user = data.data[0];  // Twitch returns an array; we want the first user
-                console.log('Username:', user.login); // Twitch username (login)
-                console.log('Display Name:', user.display_name); // Display name
-                console.log('User ID:', user.id); // User ID
-
-                // Get the login button element
-                const loginButton = document.getElementById('twitch-login');
-
-                // Disable the button and change its text after login
-                loginButton.innerText = `${user.display_name}`;
-                loginButton.disabled = true;  // This disables the button
-                loginButton.classList.add('disabled');  // Optional: Add a "disabled" class for extra styling (like opacity change)
-            }
-        } else {
-            const errorData = await response.json();
-            console.error('Error fetching user info:', response.status, errorData);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-function sendHatChangeRequest(hatName, viewerName) {
+// Send both the user's display name and the selected hat to Unity
+function sendHatAndUsernameToUnity(hatName, viewerName) {
     const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
 
     // Create the data to send
-    const postData = `ChangeHat:${hatName}&viewerName=${viewerName}`;
+    const postData = `hatName:${hatName}&viewerName:${viewerName}`;
 
     // Send the POST request
     fetch(url, {
@@ -145,10 +106,7 @@ function sendHatChangeRequest(hatName, viewerName) {
 }
 
 // Example button click event to change the hat
-document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat', viewerName);
-document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie', viewerName);
-document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie', viewerName);
-document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie', viewerName);
-
-
-
+document.getElementById('NoHat').onclick = () => sendHatAndUsernameToUnity('NoHat', viewerName);
+document.getElementById('RedBeanie').onclick = () => sendHatAndUsernameToUnity('RedBeanie', viewerName);
+document.getElementById('BlueBeanie').onclick = () => sendHatAndUsernameToUnity('BlueBeanie', viewerName);
+document.getElementById('GreenBeanie').onclick = () => sendHatAndUsernameToUnity('GreenBeanie', viewerName);
