@@ -1,3 +1,6 @@
+// Global variable to store the viewer name
+let viewerName = null;
+
 // Function to start Twitch login process
 function twitchLogin() {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
@@ -61,8 +64,8 @@ async function fetchUserInfo(token) {
             console.log('User Info:', data);
             if (data.data && data.data.length > 0) {
                 const user = data.data[0];
-                const viewerName = user.display_name;
-                document.getElementById('twitch-login').innerText = `${user.display_name}`;
+                viewerName = user.display_name;  // Store the viewer name globally
+                document.getElementById('twitch-login').innerText = `Logged in as ${user.display_name}`;
                 document.getElementById('twitch-login').disabled = true; // Disable button after login
             }
         } else {
@@ -81,8 +84,19 @@ window.onload = () => {
     }
 };
 
-// Send both the user's display name and the selected hat to Unity
-function sendHatAndUsernameToUnity(hatName, viewerName) {
+// Example button click event to change the hat
+document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat');
+document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie');
+document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie');
+document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie');
+
+// Function to send the hat change request to Unity with viewer name
+function sendHatChangeRequest(hatName) {
+    if (!viewerName) {
+        console.error('Viewer name is not available');
+        return;
+    }
+
     const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
 
     // Create the data to send
@@ -104,9 +118,3 @@ function sendHatAndUsernameToUnity(hatName, viewerName) {
             console.error("Error sending request:", error);
         });
 }
-
-// Example button click event to change the hat
-document.getElementById('NoHat').onclick = () => sendHatAndUsernameToUnity('NoHat', viewerName);
-document.getElementById('RedBeanie').onclick = () => sendHatAndUsernameToUnity('RedBeanie', viewerName);
-document.getElementById('BlueBeanie').onclick = () => sendHatAndUsernameToUnity('BlueBeanie', viewerName);
-document.getElementById('GreenBeanie').onclick = () => sendHatAndUsernameToUnity('GreenBeanie', viewerName);
