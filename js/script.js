@@ -26,28 +26,34 @@ function authenticateWithTwitch() {
     window.open(authUrl, "_blank");
 }
 
-function getViewerName(accessToken) {
-    // Make a request to the Twitch API to get user info
-    fetch('https://api.twitch.tv/helix/users', {
-        method: 'GET',
+function getViewerName() {
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        console.error("No access token found. User may not be authenticated.");
+        return;
+    }
+
+    fetch("https://api.twitch.tv/helix/users", {
+        method: "GET",
         headers: {
-            'Client-ID': 'mdvx1f5go1vufb6ilzl43eu4o67onp',
-            'Authorization': `Bearer ${accessToken}`
+            "Authorization": "Bearer " + accessToken,
+            "Client-Id": "mdvx1f5go1vufb6ilzl43eu4o67onp"
         }
     })
         .then(response => response.json())
         .then(data => {
-            viewerName = data.data[0].login; // Extract the username
-            console.log("Authenticated user:", viewerName);
-
-            // You can now use `viewerName` as needed
-            // You may want to store it in localStorage or use it directly in your extension
-            localStorage.setItem("viewer_name", viewerName);
+            if (data.data && data.data.length > 0) {
+                const viewerName = data.data[0].login;
+                console.log("Retrieved viewer name:", viewerName);
+                localStorage.setItem("viewer_name", viewerName);
+            } else {
+                console.error("Failed to retrieve viewer name from Twitch API:", data);
+            }
         })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
+        .catch(error => console.error("Error fetching viewer name:", error));
 }
+
 
 function openTab(evt, tabName) {
     let i, tabcontent, tablinks;
