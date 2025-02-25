@@ -16,7 +16,7 @@ function getCodeFromUrl() {
 // Function to exchange the code for an access token
 async function exchangeCodeForToken(code) {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
-    const clientSecret = 'YOUR_CLIENT_SECRET'; // Replace with your Twitch Client Secret
+    const clientSecret = '08xyg88er6jucz38xr2viwbklo4a1z'; // Replace with your Twitch Client Secret
     const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Ensure this matches the registered redirect URI
 
     const params = new URLSearchParams();
@@ -39,11 +39,13 @@ async function exchangeCodeForToken(code) {
             fetchUserInfo(data.access_token);
         } else {
             const errorData = await response.json();
-            console.error('Error fetching token:', response.status, errorData);
+            console.error('Error fetching token:', response.status, errorData); // Log the error data for more details
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error); // Log any other errors (network issues, etc.)
     }
+}
+
 
 
 // Fetch user info using the access token
