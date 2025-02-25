@@ -105,7 +105,7 @@ async function fetchUserInfo(accessToken) {
                 const loginButton = document.getElementById('twitch-login');
 
                 // Disable the button and change its text after login
-                loginButton.innerText = `Logged in as ${user.display_name}`;
+                loginButton.innerText = `${user.display_name}`;
                 loginButton.disabled = true;  // This disables the button
                 loginButton.classList.add('disabled');  // Optional: Add a "disabled" class for extra styling (like opacity change)
             }
