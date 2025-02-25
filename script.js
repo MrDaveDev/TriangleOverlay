@@ -3,7 +3,7 @@ function twitchLogin() {
     const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Replace with your redirect URI
     const scope = 'user:read:email'; // Adjust scope as needed
 
-    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent(scope)}`;
+    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=https://mrdavedev.github.io/TriangleOverlay/index.html&response_type=code&scope=openid`;
 
     window.location.href = authUrl;
 }
