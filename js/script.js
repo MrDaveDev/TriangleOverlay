@@ -65,7 +65,7 @@ async function fetchUserInfo(token) {
             if (data.data && data.data.length > 0) {
                 const user = data.data[0];
                 viewerName = user.display_name;  // Store the viewer name globally
-                document.getElementById('twitch-login').innerText = `Logged in as ${user.display_name}`;
+                document.getElementById('twitch-login').innerText = `${user.display_name}`;
                 document.getElementById('twitch-login').disabled = true; // Disable button after login
             }
         } else {
