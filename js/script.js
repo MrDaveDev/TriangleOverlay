@@ -1,3 +1,5 @@
+var viewerName;
+
 // Function to start Twitch login process
 function twitchLogin() {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
@@ -61,6 +63,7 @@ async function fetchUserInfo(token) {
             console.log('User Info:', data);
             if (data.data && data.data.length > 0) {
                 const user = data.data[0];
+                viewerName = user.display_name;
                 document.getElementById('twitch-login').innerText = `Logged in as ${user.display_name}`;
                 document.getElementById('twitch-login').disabled = true; // Disable button after login
             }
@@ -142,10 +145,10 @@ function sendHatChangeRequest(hatName, viewerName) {
 }
 
 // Example button click event to change the hat
-document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat', user.display_name);
-document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie', user.display_name);
-document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie', user.display_name);
-document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie', user.display_name);
+document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat', viewerName);
+document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie', viewerName);
+document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie', viewerName);
+document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie', viewerName);
 
 
 
