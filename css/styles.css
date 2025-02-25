@@ -21,7 +21,7 @@ body {
     top: 10px;             /* Adjust to position the button in the top-left corner */
     left: 10px;
     padding: 10px 20px;
-    background-color: #6441a5; /* Twitch purple */
+    background-color: #4a4468; /* Twitch purple */
     color: white;
     border: none;
     border-radius: 5px;
@@ -37,8 +37,8 @@ body {
 
 /* Disabled button styling */
 #twitch-login:disabled {
-    background-color: #ccc; /* Light grey when disabled */
-    color: #888;            /* Dim text when disabled */
+    background-color: #37204a; /* Light grey when disabled */
+    color: #ffffff;            /* Dim text when disabled */
     cursor: not-allowed;    /* Show the "not-allowed" cursor */
 }
 
