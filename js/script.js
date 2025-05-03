@@ -201,8 +201,8 @@ function sendFaceChangeRequest(faceName) {
 }
 
 // Body buttons
-document.getElementById('Body').onclick = () => sendFaceChangeRequest('Body');
-document.getElementById('AlienBody').onclick = () => sendFaceChangeRequest('AlienBody');
+document.getElementById('Body').onclick = () => sendBodyChangeRequest('Body');
+document.getElementById('AlienBody').onclick = () => sendBodyChangeRequest('AlienBody');
 
 function sendBodyChangeRequest(bodyName) {
     if (!viewerName) {
