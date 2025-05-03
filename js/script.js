@@ -211,7 +211,7 @@ function sendBodyChangeRequest(bodyName) {
     }
 
     const url = 'http://localhost:8080/';
-    const postData = `faceName:${bodyName}&viewerName:${viewerName}`;
+    const postData = `bodyName:${bodyName}&viewerName:${viewerName}`;
 
     fetch(url, {
         method: 'POST',
