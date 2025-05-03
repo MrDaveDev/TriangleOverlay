@@ -134,7 +134,7 @@ body {
     margin-top: 15px;
 }
 
-/* Hat options */
+/* Face options */
 .face-option {
     background: #333;
     color: #fff;
@@ -153,5 +153,27 @@ body {
 }
 
 .face-option:hover {
+    background: #555;
+}
+
+/* Body options */
+.body-option {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.body-option img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.body-option:hover {
     background: #555;
 }
