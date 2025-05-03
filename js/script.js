@@ -1,26 +1,35 @@
-// Global variable to store the viewer name
+// Function to switch tabs
+function openTab(evt, tabId) {
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => tab.classList.remove('active'));
+    contents.forEach(content => content.classList.remove('active'));
+
+    evt.currentTarget.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+}
+
+// Twitch login flow
 let viewerName = null;
 
-// Function to start Twitch login process
 function twitchLogin() {
-    const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
-    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Replace with your redirect URI
-    const scope = 'user:read:email'; // Adjust scope as needed
+    const clientId = 'mdvx1f5go1vufb6ilzl43eu4a67onp';
+    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html';
+    const scope = 'user:read:email';
     const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
     window.location.href = authUrl;
 }
 
-// Function to extract the code from the URL
 function getCodeFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('code');
 }
 
-// Function to exchange the code for an access token
 async function exchangeCodeForToken(code) {
-    const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
-    const clientSecret = '08xyg88er6jucz38xr2viwbklo4a1z'; // Replace with your Twitch Client Secret
-    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Ensure this matches the registered redirect URI
+    const clientId = 'mdvx1f5go1vufb6ilzl43eu4a67onp';
+    const clientSecret = '08xyg88er6jucz38xr2viwbklo4a1z';
+    const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html';
 
     const params = new URLSearchParams();
     params.append('client_id', clientId);
@@ -33,7 +42,7 @@ async function exchangeCodeForToken(code) {
         const response = await fetch('https://id.twitch.tv/oauth2/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params,
+            body: params
         });
 
         if (response.ok) {
@@ -41,32 +50,29 @@ async function exchangeCodeForToken(code) {
             console.log('Access Token:', data.access_token);
             fetchUserInfo(data.access_token);
         } else {
-            const errorData = await response.json();
-            console.error('Error fetching token:', response.status, errorData); // Log the error data for more details
+            console.error('Error fetching token:', response.status, await response.text());
         }
     } catch (error) {
-        console.error('Error:', error); // Log any other errors (network issues, etc.)
+        console.error('Error:', error);
     }
 }
 
-// Fetch user info using the access token
 async function fetchUserInfo(token) {
     try {
         const response = await fetch('https://api.twitch.tv/helix/users', {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Client-Id': 'mdvx1f5go1vufb6ilzl43eu4o67onp', // Replace with your Client ID
-            },
+                'Client-Id': 'mdvx1f5go1vufb6ilzl43eu4a67onp'
+            }
         });
 
         if (response.ok) {
             const data = await response.json();
-            console.log('User Info:', data);
             if (data.data && data.data.length > 0) {
                 const user = data.data[0];
-                viewerName = user.display_name;  // Store the viewer name globally
+                viewerName = user.display_name;
                 document.getElementById('twitch-login').innerText = `${user.display_name}`;
-                document.getElementById('twitch-login').disabled = true; // Disable button after login
+                document.getElementById('twitch-login').disabled = true;
             }
         } else {
             console.error('Error fetching user info:', response.status, await response.text());
@@ -76,33 +82,29 @@ async function fetchUserInfo(token) {
     }
 }
 
-// On page load, check if we have the code to exchange
 window.onload = () => {
     const code = getCodeFromUrl();
     if (code) {
         exchangeCodeForToken(code);
     }
+    updateColorPreview(); // Initialize preview on load
 };
 
-// Example button click event to change the hat
+// Hat buttons
 document.getElementById('NoHat').onclick = () => sendHatChangeRequest('NoHat');
 document.getElementById('RedBeanie').onclick = () => sendHatChangeRequest('RedBeanie');
 document.getElementById('BlueBeanie').onclick = () => sendHatChangeRequest('BlueBeanie');
 document.getElementById('GreenBeanie').onclick = () => sendHatChangeRequest('GreenBeanie');
 
-// Function to send the hat change request to Unity with viewer name
 function sendHatChangeRequest(hatName) {
     if (!viewerName) {
         console.error('Viewer name is not available');
         return;
     }
 
-    const url = 'http://localhost:8080/';  // The Unity HTTP listener URL
-
-    // Create the data to send
+    const url = 'http://localhost:8080/';
     const postData = `hatName:${hatName}&viewerName:${viewerName}`;
 
-    // Send the POST request
     fetch(url, {
         method: 'POST',
         headers: {
@@ -118,3 +120,20 @@ function sendHatChangeRequest(hatName) {
             console.error("Error sending request:", error);
         });
 }
+
+// Color slider logic
+const red = document.getElementById('red');
+const green = document.getElementById('green');
+const blue = document.getElementById('blue');
+const preview = document.getElementById('color-preview');
+
+function updateColorPreview() {
+    const r = red.value;
+    const g = green.value;
+    const b = blue.value;
+    preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+}
+
+red.addEventListener('input', updateColorPreview);
+green.addEventListener('input', updateColorPreview);
+blue.addEventListener('input', updateColorPreview);
