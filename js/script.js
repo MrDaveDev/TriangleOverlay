@@ -31,7 +31,7 @@ function getCodeFromUrl() {
 // Function to exchange the code for an access token
 async function exchangeCodeForToken(code) {
     const clientId = 'mdvx1f5go1vufb6ilzl43eu4o67onp'; // Replace with your Twitch Client ID
-    const clientSecret = '08xyg88er6jucz38xr2viwbklo4a1z'; // Replace with your Twitch Client Secret
+    const clientSecret = '9rfe82p8ga0kff8z5ucmep3n1f8a55'; // Replace with your Twitch Client Secret
     const redirectUri = 'https://mrdavedev.github.io/TriangleOverlay/index.html'; // Ensure this matches the registered redirect URI
 
     const params = new URLSearchParams();
@@ -153,7 +153,7 @@ function sendColorChangeRequest(color) {
     }
 
     const url = 'http://localhost:8080/';
-    const postData = `color:${hatName}&viewerName:${viewerName}`;
+    const postData = `color:${color}&viewerName:${viewerName}`;
 
     fetch(url, {
         method: 'POST',
