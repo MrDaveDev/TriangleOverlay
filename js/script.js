@@ -139,7 +139,7 @@ function updateColorPreview() {
     const b = blue.value;
     preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
     console.log(`rgb(${r}, ${g}, ${b})`);
-    sendColorChangeRequest('rgb(${r}, ${g}, ${b})');
+    sendColorChangeRequest(`${r}, ${g}, ${b})`);
 }
 
 red.addEventListener('input', updateColorPreview);
