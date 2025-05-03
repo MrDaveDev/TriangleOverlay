@@ -15,13 +15,13 @@ body {
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
 }
 
-/* Basic button styling */
+/* Twitch login button */
 #twitch-login {
-    position: fixed;       /* Fix the button position to the screen */
-    top: 10px;             /* Adjust to position the button in the top-left corner */
+    position: fixed;
+    top: 10px;
     left: 10px;
     padding: 10px 20px;
-    background-color: #4a4468; /* Twitch purple */
+    background-color: #4a4468;
     color: white;
     border: none;
     border-radius: 5px;
@@ -30,23 +30,21 @@ body {
     transition: background-color 0.3s;
 }
 
-/* Button hover effect */
 #twitch-login:hover {
-    background-color: #7b5ba1; /* Lighter purple when hovered */
+    background-color: #7b5ba1;
 }
 
-/* Disabled button styling */
 #twitch-login:disabled {
-    background-color: #37204a; /* Light grey when disabled */
-    color: #ffffff;            /* Dim text when disabled */
-    cursor: not-allowed;    /* Show the "not-allowed" cursor */
+    background-color: #37204a;
+    color: #ffffff;
+    cursor: not-allowed;
 }
 
-/* Optionally add a class for further styling */
 .disabled {
-    opacity: 0.5;  /* Make the button look semi-transparent when disabled */
+    opacity: 0.5;
 }
 
+/* Tabs */
 .tabs {
     display: flex;
     justify-content: space-around;
@@ -73,12 +71,19 @@ body {
     cursor: not-allowed;
 }
 
+/* Tab content */
 .tab-content {
+    display: none;
     background: #222;
     padding: 20px;
     border-radius: 10px;
 }
 
+.tab-content.active {
+    display: block;
+}
+
+/* Hat options */
 .hat-option {
     background: #333;
     color: #fff;
@@ -98,4 +103,33 @@ body {
 
 .hat-option:hover {
     background: #555;
+}
+
+/* RGB sliders */
+.color-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-group label {
+    width: 30px;
+    text-align: right;
+}
+
+.preview-box {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(255, 0, 0);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 15px;
 }
