@@ -170,3 +170,32 @@ function sendColorChangeRequest(color) {
             console.error("Error sending request:", error);
         });
 }
+
+// Face buttons
+document.getElementById('Face').onclick = () => sendFaceChangeRequest('Face');
+document.getElementById('AlienFace').onclick = () => sendFaceChangeRequest('AlienFace');
+
+function sendFaceChangeRequest(faceName) {
+    if (!viewerName) {
+        console.error('Viewer name is not available');
+        return;
+    }
+
+    const url = 'http://localhost:8080/';
+    const postData = `faceName:${faceName}&viewerName:${viewerName}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+        body: postData
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Received response from Unity: " + data);
+        })
+        .catch(error => {
+            console.error("Error sending request:", error);
+        });
+}
