@@ -132,8 +132,35 @@ function updateColorPreview() {
     const g = green.value;
     const b = blue.value;
     preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    print(`rgb(${r}, ${g}, ${b})`);
+    sendColorChangeRequest('rgb(${r}, ${g}, ${b})');
 }
 
 red.addEventListener('input', updateColorPreview);
 green.addEventListener('input', updateColorPreview);
 blue.addEventListener('input', updateColorPreview);
+
+function sendColorChangeRequest(color) {
+    if (!viewerName) {
+        console.error('Viewer name is not available');
+        return;
+    }
+
+    const url = 'http://localhost:8080/';
+    const postData = `color:${hatName}&viewerName:${viewerName}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+        body: postData
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Received response from Unity: " + data);
+        })
+        .catch(error => {
+            console.error("Error sending request:", error);
+        });
+}
