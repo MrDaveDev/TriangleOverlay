@@ -138,7 +138,7 @@ function updateColorPreview() {
     const g = green.value;
     const b = blue.value;
     preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-    print(`rgb(${r}, ${g}, ${b})`);
+    console.log(`rgb(${r}, ${g}, ${b})`);
     sendColorChangeRequest('rgb(${r}, ${g}, ${b})');
 }
 
