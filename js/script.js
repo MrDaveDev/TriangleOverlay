@@ -108,7 +108,7 @@ function sendHatChangeRequest(hatName) {
         return;
     }
 
-    const url = 'http://10.0.0.68:8080/';
+    const url = 'https://mrdavedev.github.io/TriangleOverlay/';
     const postData = `hatName:${hatName}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -152,7 +152,7 @@ function sendColorChangeRequest(color) {
         return;
     }
 
-    const url = 'http://10.0.0.68:8080/';
+    const url = 'https://mrdavedev.github.io/TriangleOverlay/';
     const postData = `color:${color}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -181,7 +181,7 @@ function sendFaceChangeRequest(faceName) {
         return;
     }
 
-    const url = 'http://10.0.0.68:8080/';
+    const url = 'https://mrdavedev.github.io/TriangleOverlay/';
     const postData = `faceName:${faceName}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -210,7 +210,7 @@ function sendBodyChangeRequest(bodyName) {
         return;
     }
 
-    const url = 'http://10.0.0.68:8080/';
+    const url = 'https://mrdavedev.github.io/TriangleOverlay/';
     const postData = `bodyName:${bodyName}&viewerName:${viewerName}`;
 
     fetch(url, {
