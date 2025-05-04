@@ -152,7 +152,7 @@ function sendColorChangeRequest(color) {
         return;
     }
 
-    const url = 'http://localhost:8080/';
+    const url = 'http://10.0.0.68:8080/...';
     const postData = `color:${color}&viewerName:${viewerName}`;
 
     fetch(url, {
