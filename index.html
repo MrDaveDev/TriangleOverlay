@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-<button id="twitch-login" onclick="twitchLogin()">Login to Twitch</button>
 <div class="container">
     <div class="tabs">
         <button class="tab active" onclick="openTab(event, 'colors')">Colors</button>
@@ -21,16 +20,19 @@
         <h2>Select a Color</h2>
         <div class="color-slider">
             <div class="slider-group">
-                <label for="red">R</label>
-                <input type="range" id="red" min="0" max="255" value="255" />
+                <a>R</a>
+                <input type="range" id="red" min="0" max="255" value="255" style="accent-color: rgb(255, 0, 0)" oninput="this.nextElementSibling.value = this.value" />
+                <output>255</output>
             </div>
             <div class="slider-group">
-                <label for="green">G</label>
-                <input type="range" id="green" min="0" max="255" value="0" />
+                <a>G</a>
+                <input type="range" id="green" min="0" max="255" value="42" style="accent-color: rgb(0, 255, 0)" oninput="this.nextElementSibling.value = this.value" />
+                <output>42</output>
             </div>
             <div class="slider-group">
-                <label for="blue">B</label>
-                <input type="range" id="blue" min="0" max="255" value="0" />
+                <a>B</a>
+                <input type="range" id="blue" min="0" max="255" value="61" style="accent-color: rgb(0, 0, 255)" oninput="this.nextElementSibling.value = this.value" />
+                <output>61</output>
             </div>
             <div class="preview-box" id="color-preview"></div>
         </div>
@@ -74,6 +76,8 @@
             <img src="images/bodies/AlienBody.png" alt="AlienBody" />
         </button>
     </div>
+
+    <button id="twitch-login" onclick="twitchLogin()">Login to Twitch</button>
 </div>
 <script src="js/script.js"></script>
 </body>
