@@ -108,7 +108,7 @@ function sendHatChangeRequest(hatName) {
         return;
     }
 
-    const url = 'https://triangleoverlay.duckdns.org/';
+    const url = 'https://+:443/';
     const postData = `hatName:${hatName}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -152,7 +152,7 @@ function sendColorChangeRequest(color) {
         return;
     }
 
-    const url = 'https://triangleoverlay.duckdns.org/';
+    const url = 'https://+:443/';
     const postData = `color:${color}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -181,7 +181,7 @@ function sendFaceChangeRequest(faceName) {
         return;
     }
 
-    const url = 'https://triangleoverlay.duckdns.org/';
+    const url = 'https://+:443/';
     const postData = `faceName:${faceName}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -210,7 +210,7 @@ function sendBodyChangeRequest(bodyName) {
         return;
     }
 
-    const url = 'https://triangleoverlay.duckdns.org/';
+    const url = 'https://+:443/';
     const postData = `bodyName:${bodyName}&viewerName:${viewerName}`;
 
     fetch(url, {
