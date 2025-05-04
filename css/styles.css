@@ -17,9 +17,9 @@ body {
 
 /* Twitch login button */
 #twitch-login {
-    position: fixed;
+    position: relative;
     top: 10px;
-    left: 10px;
+    left: 0px;
     padding: 10px 20px;
     background-color: #4a4468;
     color: white;
@@ -128,7 +128,7 @@ body {
 .preview-box {
     width: 100px;
     height: 100px;
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(255, 42, 61);
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-top: 15px;
