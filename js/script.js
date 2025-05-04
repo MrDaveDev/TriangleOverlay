@@ -152,7 +152,7 @@ function sendColorChangeRequest(color) {
         return;
     }
 
-    const url = 'https://https://10.0.0.68:443/';
+    const url = 'https://10.0.0.68:443/';
     const postData = `color:${color}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -181,7 +181,7 @@ function sendFaceChangeRequest(faceName) {
         return;
     }
 
-    const url = 'https://https://10.0.0.68:443/';
+    const url = 'https://10.0.0.68:443/';
     const postData = `faceName:${faceName}&viewerName:${viewerName}`;
 
     fetch(url, {
@@ -210,7 +210,7 @@ function sendBodyChangeRequest(bodyName) {
         return;
     }
 
-    const url = 'https://https://10.0.0.68:443/';
+    const url = 'https://10.0.0.68:443/';
     const postData = `bodyName:${bodyName}&viewerName:${viewerName}`;
 
     fetch(url, {
